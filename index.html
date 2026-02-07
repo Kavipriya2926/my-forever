@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Forever ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Playfair Display', serif;
+    background: #000;
+}
+
+/* ================= MUSIC BUTTON ================= */
+.music-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 0 25px rgba(255,0,120,0.6);
+    transition: transform 0.3s, box-shadow 0.3s;
+    z-index: 50;
+}
+
+.music-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 40px rgba(255,0,150,0.9);
+}
+
+/* ================= ENVELOPE SCREEN ================= */
+.envelope-screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #2b0015, #000);
+    z-index: 20;
+}
+
+.envelope {
+    width: 80vw;
+    max-width: 900px;
+    height: 60vh;
+    background: linear-gradient(145deg, #ff5c8a, #ff2f6d);
+    border-radius: 25px;
+    position: relative;
+    box-shadow: 0 0 80px rgba(255,0,120,0.8);
+    cursor: pointer;
+    animation: float 4s ease-in-out infinite;
+    overflow: hidden;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-18px); }
+}
+
+.envelope::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, #ff94c2, #ff5c8a);
+    clip-path: polygon(0 0, 50% 50%, 100% 0);
+    transform-origin: top;
+    transition: transform 2s ease;
+    z-index: 3;
+}
+
+.card {
+    position: absolute;
+    inset: 0;
+    background-image: url("couple-bg.png");
+    background-size: cover;
+    background-position: center;
+    transform: translateY(40%);
+    transition: transform 2.5s ease;
+    z-index: 1;
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(6px);
+}
+
+.envelope.open::before {
+    transform: rotateX(180deg);
+}
+
+.envelope.open .card {
+    transform: translateY(0);
+}
+
+.envelope-title {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Great Vibes', cursive;
+    font-size: 46px;
+    color: white;
+    z-index: 4;
+}
+
+.open-hint {
+    position: absolute;
+    bottom: -45px;
+    width: 100%;
+    text-align: center;
+    color: #ffb3d1;
+    font-size: 18px;
+}
+
+/* ================= MAIN WEBSITE ================= */
+.main {
+    position: fixed;
+    inset: 0;
+    background-image: url("couple-bg.png");
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 2s ease;
+    z-index: 1;
+}
+
+.main.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ================= WEBSITE CARD ================= */
+.container {
+    max-width: 900px;
+    margin: 80px auto;
+    padding: 55px;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(6px);
+    border-radius: 45px;
+    box-shadow: 0 0 60px rgba(255,0,120,0.35);
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 68px;
+    color: #b0005c;
+}
+
+p {
+    font-size: 30px;
+    color: #4a0028;
+    margin: 30px 0;
+}
+
+button {
+    padding: 14px 32px;
+    margin: 10px;
+    border: none;
+    border-radius: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    background: linear-gradient(45deg, #ff004f, #7b2ff7, #00c6ff);
+    color: white;
+    box-shadow: 0 0 18px rgba(255,0,150,0.6);
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎶 MUSIC -->
+<audio id="bgMusic" loop>
+    <source src="love-music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ▶️ / ⏸ BUTTON -->
+<div class="music-btn" id="musicBtn">▶️</div>
+
+<!-- ENVELOPE -->
+<div class="envelope-screen" id="envScreen">
+    <div class="envelope" id="envelope">
+        <div class="card"></div>
+        <div class="envelope-title">My Forever 💖</div>
+        <div class="open-hint">Tap to open 💌</div>
+    </div>
+</div>
+
+<!-- MAIN WEBSITE -->
+<div class="main" id="mainSite">
+    <div class="container">
+        <h1>My Forever 💖</h1>
+        <p id="question"></p>
+        <div id="options"></div>
+    </div>
+</div>
+
+<script>
+const music = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+let isPlaying = false;
+
+/* Envelope open */
+document.getElementById("envelope").onclick = () => {
+    document.getElementById("envelope").classList.add("open");
+
+    music.volume = 0.4;
+    music.play();
+    isPlaying = true;
+    musicBtn.innerText = "⏸";
+
+    setTimeout(() => {
+        document.getElementById("envScreen").style.display = "none";
+        document.getElementById("mainSite").classList.add("show");
+    }, 2500);
+};
+
+/* Play / Pause */
+musicBtn.onclick = () => {
+    if (isPlaying) {
+        music.pause();
+        musicBtn.innerText = "▶️";
+    } else {
+        music.play();
+        musicBtn.innerText = "⏸";
+    }
+    isPlaying = !isPlaying;
+};
+
+/* QUESTIONS — UNCHANGED */
+let current = 0;
+const questions = [
+{ q: "Are you ready for something made just for you? 💕", options: ["Yes papa❤️", "ok dii❤️", "Always 😘"] },
+{ q: "Do you remember our first conversation in call? 💭", options: ["Very clearly(EXPLAIN) 😊", "How can I forget(EXPLAIN) 💖"] },
+{ q: "What made you smile when you think of me? 😄", options: ["Your care ❤️", "Your cuteness 😻"] },
+{ q: "What do you love most about us? 💑", options: ["Our bond 💕", "Our small friendly fights🥷", "Our understanding 🤍"] },
+{ q: "Where would you like our dream date to be? 🌍", options: ["Beach 🌊", "Me + You + our pet🐈", "Mountains ⛰️"] },
+{ q: "How do I make you feel every day? 💓", options: ["Loved 🥰", "comfort and loved🫂❤️", "Peaceful 😌"] },
+{ q: "What is your favorite memory with me? 💞", options: ["Late night talks 🌙", "Our pickup line stories😍", "Every moment ❤️"] },
+{ q: "What do you miss the most when we are apart? 😢", options: ["Your hugs 🤗", "your soul🪽", "Your smile 😊"] },
+{ q: "What song reminds you of me? 🎵", options: ["Our song 💕", "All love songs 😘"] },
+{ q: "What do you enjoy doing with me the most? 💌", options: ["Talking forever 💬", "sleep on my chest🫂", "making me angry and get scold"] },
+{ q: "Do you feel safe with me? 🫶", options: ["Always ❤️", "More than anything 💖"] },
+{ q: "What should our next plan be? 📅", options: ["Long walk 🌸", "one day outing 💐", "Movie night 🎬"] },
+{ q: "What makes our love special? ✨", options: ["Our trust 🤍", "Our love for each other❤️", "Our effort 💕"] },
+{ q: "Do you believe in us forever? 💍", options: ["Yes, always ❤️", "Till my last breath 😘"] },
+{ q: "What do you want to build with me? 🏡", options: ["A life 💞", "A future 💍"] },
+{ q: "What word describes us best? 💖", options: ["Soulmates 💫", "Best friends ❤️"] },
+{ q: "Will you hold my hand through everything? 🤝", options: ["Always 💕", "Never letting go 😘"] },
+{ q: "What do you promise me today? 💌", options: ["My loyalty ❤️", "My love forever 💍"] },
+{ q: "How sure are you about us? 🔐", options: ["Completely dii 💯", "With my whole heart dii 💖"] },
+{ q: "Will you be my forever Valentine? 💘", options: ["Yes dii, always dii 💍", "Forever yours dii ❤️"] }
+];
+
+function showQuestion() {
+    document.getElementById("question").innerText = questions[current].q;
+    document.getElementById("options").innerHTML =
+        questions[current].options.map(o =>
+            `<button onclick="nextQuestion()">${o}</button>`
+        ).join("");
+}
+
+function nextQuestion() {
+    current++;
+    if (current < questions.length) showQuestion();
+    else document.querySelector(".container").innerHTML =
+        `<h1>Forever Us 💍</h1><p>You are my today, my tomorrow, and my always ❤️</p>`;
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
