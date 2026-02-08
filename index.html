@@ -100,9 +100,9 @@ body.unlocked{overflow-y:auto;}
     z-index:90;
 }
 
-/* HEART GIFT BOX IMAGE */
+/* HEART BOX */
 .heart-box{
-    width:340px;
+    width:320px;
     position:relative;
     animation:rise 1.5s ease forwards;
 }
@@ -111,20 +111,26 @@ body.unlocked{overflow-y:auto;}
     to{transform:translateY(0) scale(1);}
 }
 
-.heart-box img{
+.heart-img{
     width:100%;
     display:block;
+    filter:drop-shadow(0 0 25px rgba(255,0,150,.8));
+    animation:float 3s ease-in-out infinite;
+}
+@keyframes float{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-12px);}
 }
 
-/* BOW CLICK AREA */
+/* BOW */
 .bow{
     position:absolute;
-    top:35%;
+    top:38%;
     left:50%;
     transform:translate(-50%,-50%);
-    font-size:40px;
+    font-size:48px;
     cursor:pointer;
-    z-index:5;
+    z-index:10;
 }
 
 /* PHOTOS */
@@ -138,10 +144,10 @@ body.unlocked{overflow-y:auto;}
     animation:photoPop 4s ease forwards;
 }
 @keyframes photoPop{
-    0%{opacity:0; transform:translateY(40px) scale(.7);}
+    0%{opacity:0; transform:translate(-50%,-40%) scale(.7);}
     15%{opacity:1;}
     85%{opacity:1;}
-    100%{opacity:0; transform:translateY(-40px) scale(1);}
+    100%{opacity:0; transform:translate(-50%,-60%) scale(1);}
 }
 
 /* QUESTIONS */
@@ -202,10 +208,10 @@ button{
 
 <div class="background" id="bg"></div>
 
-<!-- HEART GIFT BOX -->
+<!-- HEART BOX -->
 <div class="box-screen" id="boxScreen">
     <div class="heart-box" id="heartBox">
-        <img src="photos/heart-gift-box.png" alt="Heart Gift Box">
+        <img src="heart-gift-box.png" class="heart-img" alt="Heart Gift Box">
         <div class="bow" onclick="startPhotos()">🎀</div>
     </div>
 </div>
@@ -261,7 +267,6 @@ function startPhotos(){
         img.className="photo";
         img.style.left="50%";
         img.style.top="50%";
-        img.style.transform="translate(-50%,-50%)";
         heartBox.appendChild(img);
 
         setTimeout(()=>img.remove(),4000);
