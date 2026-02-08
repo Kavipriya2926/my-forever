@@ -12,25 +12,25 @@ body{
     font-family:'Playfair Display',serif;
     background:#000;
 }
-body.locked{overflow:hidden}
-body.unlocked{overflow-y:auto}
+body.locked{overflow:hidden;}
+body.unlocked{overflow-y:auto;}
 
-/* 🎵 MUSIC BUTTON (GLOBAL) */
+/* 🎵 MUSIC BUTTON */
 .music-btn{
     position:fixed;
-    bottom:25px;
-    right:25px;
+    bottom:20px;
+    right:20px;
     width:55px;
     height:55px;
     border-radius:50%;
     background:linear-gradient(45deg,#ff004f,#7b2ff7);
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     font-size:22px;
     cursor:pointer;
-    box-shadow:0 0 25px rgba(255,0,150,0.9);
-    z-index:999;
+    z-index:200;
+    box-shadow:0 0 25px rgba(255,0,150,.9);
 }
 
 /* 🔐 PASSWORD */
@@ -39,14 +39,13 @@ body.unlocked{overflow-y:auto}
     inset:0;
     background:radial-gradient(circle,#120012,#000);
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     z-index:100;
 }
 .lock-box{
-    width:380px;
-    padding:45px;
     background:#050005;
+    padding:45px;
     border-radius:30px;
     text-align:center;
     box-shadow:0 0 60px rgba(255,0,150,.6);
@@ -60,33 +59,47 @@ body.unlocked{overflow-y:auto}
     animation:glow 2s infinite alternate;
 }
 @keyframes glow{
-    from{text-shadow:0 0 10px #ff69b4}
-    to{text-shadow:0 0 25px #9b5cff}
+    from{text-shadow:0 0 10px #ff69b4;}
+    to{text-shadow:0 0 25px #9b5cff;}
 }
-.lock-box p{color:#bdefff}
+.lock-box p{color:#bdefff;}
 .lock-box input{
     margin-top:25px;
-    width:80%;
     padding:14px;
+    width:80%;
     border-radius:30px;
     border:none;
-    text-align:center;
     font-size:18px;
+    text-align:center;
     animation:pulse 1.5s infinite alternate;
 }
 @keyframes pulse{
-    from{box-shadow:0 0 10px #ff69b4}
-    to{box-shadow:0 0 25px #9b5cff}
+    from{box-shadow:0 0 10px #ff69b4;}
+    to{box-shadow:0 0 25px #9b5cff;}
 }
 .lock-box button{
     margin-top:25px;
     padding:12px 40px;
-    border-radius:30px;
     border:none;
+    border-radius:30px;
     font-size:18px;
-    cursor:pointer;
     background:linear-gradient(45deg,#ff004f,#7b2ff7);
-    color:white;
+    color:#fff;
+    cursor:pointer;
+}
+
+/* 🌄 BACKGROUND */
+.background{
+    position:fixed;
+    inset:0;
+    background:url("couple-bg.png") center/cover no-repeat;
+    animation:zoom 40s infinite ease-in-out;
+    z-index:-1;
+    display:none;
+}
+@keyframes zoom{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.05);}
 }
 
 /* 💌 ENVELOPE */
@@ -94,63 +107,35 @@ body.unlocked{overflow-y:auto}
     position:fixed;
     inset:0;
     display:none;
-    justify-content:center;
     align-items:center;
-    background:rgba(0,0,0,.8);
-    z-index:90;
+    justify-content:center;
+    z-index:50;
 }
 .envelope{
-    width:300px;
-    height:200px;
-    background:#ff2f6d;
-    border-radius:20px;
-    position:relative;
-    animation:spin 1.5s linear;
+    width:320px;
+    height:220px;
+    background:url("https://i.imgur.com/8pQHn4P.png") center/contain no-repeat;
+    animation:spin 1.5s ease forwards;
     cursor:pointer;
 }
 @keyframes spin{
-    from{transform:rotate(0)}
-    to{transform:rotate(360deg)}
-}
-.envelope::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:#ff5c8a;
-    clip-path:polygon(0 0,50% 55%,100% 0);
-    transform-origin:top;
-    transition:transform 1.5s ease;
-}
-.envelope.open::before{
-    transform:rotateX(180deg);
+    0%{transform:rotate(0);}
+    100%{transform:rotate(360deg);}
 }
 
 /* ❤️ HEARTS */
 .heart{
-    position:absolute;
-    color:red;
-    font-size:24px;
-    animation:float 3s ease-out forwards;
-}
-@keyframes float{
-    to{transform:translateY(-200px);opacity:0}
-}
-
-/* 🌄 BACKGROUND */
-.background{
     position:fixed;
-    inset:0;
-    background:url("couple-bg.png") center/cover;
-    animation:zoom 40s ease-in-out infinite;
-    z-index:-1;
+    font-size:30px;
+    animation:floatUp 3s ease forwards;
 }
-@keyframes zoom{
-    0%,100%{transform:scale(1)}
-    50%{transform:scale(1.05)}
+@keyframes floatUp{
+    0%{transform:translateY(0) scale(1);opacity:1;}
+    100%{transform:translateY(-200px) scale(1.5);opacity:0;}
 }
 
-/* 💖 CONTENT */
-.main{display:none;padding:80px 0}
+/* 🌸 MAIN CONTENT */
+.main{display:none;padding:80px 0;}
 .container{
     max-width:900px;
     margin:auto;
@@ -165,7 +150,10 @@ h1{
     font-size:68px;
     color:#b0005c;
 }
-p{font-size:28px;color:#4a0028}
+p{
+    font-size:28px;
+    color:#4a0028;
+}
 .final-message{
     font-family:'Great Vibes',cursive;
     font-size:34px;
@@ -187,41 +175,43 @@ button{
 <body class="locked">
 
 <!-- 🎵 MUSIC -->
-<audio id="music" loop>
-  <source src="music.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop>
+<source src="music.mp3" type="audio/mpeg">
 </audio>
 <div class="music-btn" onclick="toggleMusic()">🎵</div>
 
 <!-- PASSWORD -->
 <div class="lock-screen" id="lock">
-  <div class="lock-box">
-    <h1>For My Love</h1>
-    <p>Enter our secret number</p>
-    <input type="password" id="pwd">
-    <br>
-    <button onclick="unlock()">Open</button>
-    <p id="error" style="color:#ff7eb3"></p>
-  </div>
+    <div class="lock-box">
+        <h1>For My Love</h1>
+        <p>Enter our secret number</p>
+        <input type="password" id="pwd">
+        <br>
+        <button onclick="unlock()">Open</button>
+        <p id="error" style="color:#ff7eb3;"></p>
+    </div>
 </div>
 
+<div class="background" id="bg"></div>
+
+<!-- ENVELOPE -->
 <div class="envelope-screen" id="env">
-  <div class="envelope" id="envelope"></div>
+    <div class="envelope" id="envelope"></div>
 </div>
 
-<div class="background"></div>
-
+<!-- MAIN -->
 <div class="main" id="site">
-  <div class="container" id="content">
-    <h1>My Forever 💖</h1>
-    <p id="question"></p>
-    <div id="options"></div>
-  </div>
+    <div class="container" id="content">
+        <h1>My Forever 💖</h1>
+        <p id="question"></p>
+        <div id="options"></div>
+    </div>
 </div>
 
 <script>
 const PASSWORD="29262004";
-const music=document.getElementById("music");
 let current=0;
+const music=document.getElementById("bgMusic");
 
 function toggleMusic(){
     music.paused?music.play():music.pause();
@@ -231,42 +221,71 @@ function unlock(){
     if(pwd.value===PASSWORD){
         lock.style.display="none";
         env.style.display="flex";
+        music.play();
     }else{
         error.innerText="Wrong password 💔";
     }
 }
 
 envelope.onclick=()=>{
-    envelope.classList.add("open");
-    for(let i=0;i<12;i++){
-        let h=document.createElement("div");
+    env.style.display="none";
+    for(let i=0;i<15;i++){
+        const h=document.createElement("div");
         h.className="heart";
         h.innerText="❤️";
-        h.style.left=Math.random()*200+"px";
-        h.style.bottom="20px";
-        envelope.appendChild(h);
+        h.style.left=Math.random()*100+"vw";
+        h.style.top="60vh";
+        document.body.appendChild(h);
         setTimeout(()=>h.remove(),3000);
     }
     setTimeout(()=>{
-        env.style.display="none";
+        bg.style.display="block";
         site.style.display="block";
         document.body.classList.replace("locked","unlocked");
-    },2200);
+    },1500);
 };
 
-/* QUESTIONS — UNCHANGED */
-const questions=[/* SAME QUESTIONS YOU PROVIDED — UNTOUCHED */];
+/* QUESTIONS (UNCHANGED) */
+const questions=[
+{ q:"Are you ready for something made just for you? 💕",options:["Yes papa❤️","ok dii❤️","Always 😘"]},
+{ q:"Do you remember our first conversation in call? 💭",options:["Very clearly(EXPLAIN) 😊","How can I forget(EXPLAIN) 💖"]},
+{ q:"What made you smile when you think of me? 😄",options:["Your care ❤️","Your cuteness 😻"]},
+{ q:"What do you love most about us? 💑",options:["Our bond 💕","Our small friendly fights🥷","Our understanding 🤍"]},
+{ q:"Where would you like our dream date to be? 🌍",options:["Beach 🌊","Me + You + our pet🐈","Mountains ⛰️"]},
+{ q:"How do I make you feel every day? 💓",options:["Loved 🥰","comfort and loved🫂❤️","Peaceful 😌"]},
+{ q:"What is your favorite memory with me? 💞",options:["Late night talks 🌙","Our pickup line stories😍","Every moment ❤️"]},
+{ q:"What do you miss the most when we are apart? 😢",options:["Your hugs 🤗","your soul🪽","Your smile 😊"]},
+{ q:"What song reminds you of me? 🎵",options:["Our song 💕","All love songs 😘"]},
+{ q:"What do you enjoy doing with me the most? 💌",options:["Talking forever 💬","sleep on my chest🫂","making me angry and get scold"]},
+{ q:"Do you feel safe with me? 🫶",options:["Always ❤️","More than anything 💖"]},
+{ q:"What should our next plan be? 📅",options:["Long walk 🌸","one day outing 💐","Movie night 🎬"]},
+{ q:"What makes our love special? ✨",options:["Our trust 🤍","Our love for each other❤️","Our effort 💕"]},
+{ q:"Do you believe in us forever? 💍",options:["Yes, always ❤️","Till my last breath 😘"]},
+{ q:"What do you want to build with me? 🏡",options:["A life 💞","A future 💍"]},
+{ q:"What word describes us best? 💖",options:["Soulmates 💫","Best friends ❤️"]},
+{ q:"Will you hold my hand through everything? 🤝",options:["Always 💕","Never letting go 😘"]},
+{ q:"What do you promise me today? 💌",options:["My loyalty ❤️","My love forever 💍"]},
+{ q:"How sure are you about us? 🔐",options:["Completely dii 💯","With my whole heart dii 💖"]},
+{ q:"Will you be my forever Valentine? 💘",options:["Yes dii, always dii 💍","Forever yours dii ❤️"]}
+];
 
 function showQuestion(){
     question.innerText=questions[current].q;
-    options.innerHTML=questions[current].options
-    .map(o=>`<button onclick="nextQuestion()">${o}</button>`).join("");
+    options.innerHTML=questions[current].options.map(o=>`<button onclick="nextQuestion()">${o}</button>`).join("");
 }
 function nextQuestion(){
     current++;
-    if(current<questions.length) showQuestion();
-    else content.innerHTML=`<h1>Forever Us 💍</h1>
-    <p class="final-message">YOUR FINAL PARAGRAPH — UNCHANGED</p>`;
+    if(current<questions.length)showQuestion();
+    else content.innerHTML=`
+        <h1>Forever Us 💍</h1>
+        <p class="final-message">
+        From the day we first met until now, we have faced so many moments together —
+        fights, tears, laughter, emotions, and struggles.
+        You stayed, you listened, and made sure I always slept with a smile.
+        <br><br>
+        Will you be my Valentine — not just in this lifetime,
+        but in every lifetime my soul ever finds yours? ❤️
+        </p>`;
 }
 showQuestion();
 </script>
