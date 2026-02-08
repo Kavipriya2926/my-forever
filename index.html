@@ -91,7 +91,7 @@ body.unlocked{overflow-y:auto;}
     cursor:pointer;
 }
 
-/* ================= BACKGROUND (hidden initially) ================= */
+/* ================= BACKGROUND ================= */
 .background{
     position:fixed;
     inset:0;
@@ -137,7 +137,7 @@ body.unlocked{overflow-y:auto;}
     z-index:1;
 }
 
-/* envelope flap */
+/* ✅ FIXED FLAP (opens upward correctly) */
 .envelope .flap{
     position:absolute;
     left:0;
@@ -149,13 +149,13 @@ body.unlocked{overflow-y:auto;}
     border-left:260px solid transparent;
     border-right:260px solid transparent;
     border-bottom:180px solid #ff69b4;
-    transform-origin:top;
+    transform-origin:top center;
     transform:rotateX(0deg);
     transition:transform 1.2s ease;
     z-index:4;
 }
 .envelope.open .flap{
-    transform:rotateX(180deg);
+    transform:rotateX(-180deg); /* 🔥 PROPER OPEN */
 }
 
 /* ================= HEART PARTICLES ================= */
@@ -276,9 +276,7 @@ function unlock(){
         env.style.display="flex";
         music.play();
 
-        setTimeout(()=>{
-            envelope.classList.add("open");
-        },1200);
+        setTimeout(()=> envelope.classList.add("open"),1200);
 
         setTimeout(()=>{
             for(let i=0;i<25;i++){
@@ -291,9 +289,7 @@ function unlock(){
             }
         },2000);
 
-        setTimeout(()=>{
-            bg.classList.add("show");
-        },3500);
+        setTimeout(()=> bg.classList.add("show"),3500);
 
         setTimeout(()=>{
             env.style.display="none";
@@ -307,7 +303,7 @@ function unlock(){
 }
 
 /* QUESTIONS — UNCHANGED */
-const questions=[
+const questions=[ /* unchanged list */ 
 { q:"Are you ready for something made just for you? 💕", options:["Yes papa❤️","ok dii❤️","Always 😘"]},
 { q:"Do you remember our first conversation in call? 💭", options:["Very clearly(EXPLAIN) 😊","How can I forget(EXPLAIN) 💖"]},
 { q:"What made you smile when you think of me? 😄", options:["Your care ❤️","Your cuteness 😻"]},
@@ -337,17 +333,16 @@ function showQuestion(){
 function nextQuestion(){
     current++;
     if(current<questions.length) showQuestion();
-    else content.innerHTML=`
-        <h1>Forever Us 💍</h1>
-        <p class="final-message">
-        From the day we first met until now, we have faced so many moments together —
-        fights, tears, laughter, emotions, and struggles.
-        Yet no matter how hard the day was, we never went to sleep without finding our way back to each other.
-        You stayed, you listened, and you made sure I always rested with a smile.
-        This love is all I want for my whole life.
-        <br><br>
-        Will you be my Valentine — not just in this lifetime, but in every lifetime my soul ever finds yours? ❤️
-        </p>`;
+    else content.innerHTML=`<h1>Forever Us 💍</h1>
+    <p class="final-message">
+    From the day we first met until now, we have faced so many moments together —
+    fights, tears, laughter, emotions, and struggles.
+    Yet no matter how hard the day was, we never went to sleep without finding our way back to each other.
+    You stayed, you listened, and you made sure I always rested with a smile.
+    This love is all I want for my whole life.
+    <br><br>
+    Will you be my Valentine — not just in this lifetime, but in every lifetime my soul ever finds yours? ❤️
+    </p>`;
 }
 showQuestion();
 </script>
