@@ -7,11 +7,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
 
 <style>
+/* ===== BODY ===== */
 body {
     margin: 0;
-    overflow: hidden;
     font-family: 'Playfair Display', serif;
     background: #000;
+}
+
+/* Disable scroll ONLY initially */
+body.locked {
+    overflow: hidden;
+}
+
+/* Enable scroll after envelope */
+body.unlocked {
+    overflow-y: auto;
 }
 
 /* ================= PASSWORD SCREEN ================= */
@@ -31,40 +41,6 @@ body {
     padding: 50px;
     border-radius: 30px;
     text-align: center;
-    box-shadow: 0 0 60px rgba(255,0,120,0.6);
-}
-
-.lock-box h1 {
-    font-family: 'Great Vibes', cursive;
-    font-size: 60px;
-    color: #ffb3d1;
-    margin-bottom: 20px;
-}
-
-.lock-box p {
-    color: #ffd6e5;
-    font-size: 20px;
-}
-
-.lock-box input {
-    margin-top: 20px;
-    padding: 14px;
-    width: 220px;
-    border-radius: 25px;
-    border: none;
-    text-align: center;
-    font-size: 18px;
-}
-
-.lock-box button {
-    margin-top: 20px;
-    padding: 12px 30px;
-    border-radius: 30px;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    background: linear-gradient(45deg,#ff004f,#ff7eb3);
-    color: white;
 }
 
 /* ================= BACKGROUND ================= */
@@ -75,7 +51,7 @@ body {
     background-size: cover;
     background-position: center;
     animation: hugZoom 40s ease-in-out infinite;
-    z-index: -2;
+    z-index: -1;
 }
 
 @keyframes hugZoom {
@@ -90,17 +66,17 @@ body {
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 20;
+    background: rgba(0,0,0,0.6); /* opaque closed feel */
+    z-index: 50;
 }
 
 .envelope {
-    width: 80vw;
+    width: 85vw;
     max-width: 900px;
-    height: 60vh;
+    height: 65vh;
     background: linear-gradient(145deg,#ff5c8a,#ff2f6d);
-    border-radius: 25px;
+    border-radius: 30px;
     position: relative;
-    box-shadow: 0 0 80px rgba(255,0,120,0.8);
     cursor: pointer;
     overflow: hidden;
 }
@@ -113,37 +89,22 @@ body {
     clip-path: polygon(0 0,50% 50%,100% 0);
     transform-origin: top;
     transition: transform 2s ease;
-    z-index: 3;
 }
 
 .envelope.open::before {
     transform: rotateX(180deg);
 }
 
-.card {
-    position: absolute;
-    inset: 0;
-    background-image: url("couple-bg.png");
-    background-size: cover;
-    background-position: center;
-    transform: translateY(40%);
-    transition: transform 2.5s ease;
-}
-
-.envelope.open .card {
-    transform: translateY(0);
-}
-
-/* ================= MAIN WEBSITE ================= */
+/* ================= MAIN CONTENT ================= */
 .main {
-    position: fixed;
-    inset: 0;
     display: none;
+    min-height: 100vh;
+    padding: 80px 0;
 }
 
 .container {
     max-width: 900px;
-    margin: 80px auto;
+    margin: auto;
     padding: 55px;
     background: rgba(255,255,255,0.55);
     backdrop-filter: blur(6px);
@@ -158,11 +119,20 @@ h1 {
 }
 
 p {
-    font-size: 30px;
+    font-size: 28px;
     color: #4a0028;
     margin: 30px 0;
 }
 
+/* Romantic final message */
+.final-message {
+    font-family: 'Great Vibes', cursive;
+    font-size: 34px;
+    line-height: 1.6;
+    color: #6b0035;
+}
+
+/* Buttons */
 button {
     padding: 14px 32px;
     margin: 10px;
@@ -171,19 +141,20 @@ button {
     font-size: 20px;
     background: linear-gradient(45deg,#ff004f,#7b2ff7,#00c6ff);
     color: white;
+    cursor: pointer;
 }
 </style>
 </head>
 
-<body>
+<body class="locked">
 
 <!-- 🔐 PASSWORD -->
 <div class="lock-screen" id="lock">
     <div class="lock-box">
         <h1>For My Love 💌</h1>
-        <p>Enter our secret Number hint "YOU & ME"</p>
-        <input type="password" id="pwd" placeholder="💖">
-        <br>
+        <p>Enter our secret Number</p>
+        <input type="password" id="pwd">
+        <br><br>
         <button onclick="unlock()">Open</button>
         <p id="error" style="color:#ff7eb3;"></p>
     </div>
@@ -192,13 +163,11 @@ button {
 <div class="background"></div>
 
 <div class="envelope-screen" id="env">
-    <div class="envelope" id="envelope">
-        <div class="card"></div>
-    </div>
+    <div class="envelope" id="envelope"></div>
 </div>
 
 <div class="main" id="site">
-    <div class="container">
+    <div class="container" id="content">
         <h1>My Forever 💖</h1>
         <p id="question"></p>
         <div id="options"></div>
@@ -206,27 +175,29 @@ button {
 </div>
 
 <script>
-const PASSWORD = "29262004"; // 🔑 CHANGE HERE IF NEEDED
+const PASSWORD = "29262004";
+let current = 0;
 
 function unlock() {
-    if (document.getElementById("pwd").value === PASSWORD) {
-        document.getElementById("lock").style.display = "none";
-        document.getElementById("env").style.display = "flex";
+    if (pwd.value === PASSWORD) {
+        lock.style.display = "none";
+        env.style.display = "flex";
     } else {
-        document.getElementById("error").innerText = "Wrong password 💔";
+        error.innerText = "Wrong password 💔";
     }
 }
 
-document.getElementById("envelope").onclick = () => {
-    document.getElementById("envelope").classList.add("open");
+envelope.onclick = () => {
+    envelope.classList.add("open");
     setTimeout(() => {
-        document.getElementById("env").style.display = "none";
-        document.getElementById("site").style.display = "block";
-    }, 2500);
+        env.style.display = "none";
+        site.style.display = "block";
+        document.body.classList.remove("locked");
+        document.body.classList.add("unlocked");
+    }, 2200);
 };
 
 /* QUESTIONS — UNCHANGED */
-let current = 0;
 const questions = [
 { q: "Are you ready for something made just for you? 💕", options: ["Yes papa❤️", "ok dii❤️", "Always 😘"] },
 { q: "Do you remember our first conversation in call? 💭", options: ["Very clearly(EXPLAIN) 😊", "How can I forget(EXPLAIN) 💖"] },
@@ -251,18 +222,27 @@ const questions = [
 ];
 
 function showQuestion() {
-    document.getElementById("question").innerText = questions[current].q;
-    document.getElementById("options").innerHTML =
-        questions[current].options.map(o =>
-            `<button onclick="nextQuestion()">${o}</button>`
-        ).join("");
+    question.innerText = questions[current].q;
+    options.innerHTML = questions[current].options.map(o =>
+        `<button onclick="nextQuestion()">${o}</button>`
+    ).join("");
 }
 
 function nextQuestion() {
     current++;
     if (current < questions.length) showQuestion();
-    else document.querySelector(".container").innerHTML =
-        `<h1>Forever Us 💍</h1><p>From the day we first met until now🤘, we have faced so many moments together🫂; fights, tears, laughter, happiness, emotions, and struggles. Yet no matter how hard the day was, we never went to sleep without sorting things out. Even when I made mistakes, you were the one who said sorry first and held me with your love❤️. When my anger grew stronger, you still chose peace and asked sorry, even when it was late… sometimes long past four in the morning. You stayed, you listened, and after everything was settled, you made sure I slept with a smile, never with a heavy heart. This kind of love is all I want for my whole life. So today and always, I ask you this —" WILL YOU BE MY VALENTINE, NOT JUST FOR THIS LIFETIME, BUT FOR EVERY LIFETIME MY SOUL EVER FINDS YOURS?"❤️</p>`;
+    else content.innerHTML = `
+        <h1>Forever Us 💍</h1>
+        <p class="final-message">
+        From the day we first met until now, we have faced so many moments together — 
+        fights, tears, laughter, emotions, and struggles. Yet no matter how hard the day was, 
+        we never went to sleep without finding our way back to each other.  
+        You stayed, you listened, and you made sure I always rested with a smile.  
+        This love is all I want for my whole life.  
+        <br><br>
+        Will you be my Valentine — not just in this lifetime, but in every lifetime my soul ever finds yours? ❤️
+        </p>
+    `;
 }
 
 showQuestion();
@@ -270,6 +250,3 @@ showQuestion();
 
 </body>
 </html>
-
-
-
