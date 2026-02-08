@@ -79,7 +79,7 @@ body.unlocked{overflow-y:auto;}
     cursor:pointer;
 }
 
-/* BACKGROUND FOR QUESTIONS */
+/* BACKGROUND FOR QUESTIONS ONLY */
 .background{
     position:fixed;
     inset:0;
@@ -90,7 +90,7 @@ body.unlocked{overflow-y:auto;}
 }
 .background.show{opacity:1;}
 
-/* HEART BOX SCREEN */
+/* ================= FULL SCREEN HEART ANIMATION ================= */
 .box-screen{
     position:fixed;
     inset:0;
@@ -100,35 +100,34 @@ body.unlocked{overflow-y:auto;}
     z-index:90;
 }
 
-/* HEART BOX */
 .heart-box{
-    width:320px;
+    width:min(90vw,520px);
     position:relative;
-    animation:rise 1.5s ease forwards;
+    animation:rise 1.6s ease forwards;
 }
 @keyframes rise{
-    from{transform:translateY(300px) scale(.8);}
+    from{transform:translateY(100vh) scale(.9);}
     to{transform:translateY(0) scale(1);}
 }
 
 .heart-img{
     width:100%;
     display:block;
-    filter:drop-shadow(0 0 25px rgba(255,0,150,.8));
+    filter:drop-shadow(0 0 35px rgba(255,0,150,.9));
     animation:float 3s ease-in-out infinite;
 }
 @keyframes float{
     0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-12px);}
+    50%{transform:translateY(-14px);}
 }
 
 /* BOW */
 .bow{
     position:absolute;
-    top:38%;
+    top:42%;
     left:50%;
     transform:translate(-50%,-50%);
-    font-size:48px;
+    font-size:52px;
     cursor:pointer;
     z-index:10;
 }
@@ -136,8 +135,8 @@ body.unlocked{overflow-y:auto;}
 /* PHOTOS */
 .photo{
     position:absolute;
-    width:220px;
-    height:150px;
+    width:240px;
+    height:160px;
     object-fit:cover;
     border-radius:18px;
     box-shadow:0 0 25px rgba(255,0,150,.6);
@@ -208,10 +207,10 @@ button{
 
 <div class="background" id="bg"></div>
 
-<!-- HEART BOX -->
+<!-- FULL SCREEN HEART BOX -->
 <div class="box-screen" id="boxScreen">
     <div class="heart-box" id="heartBox">
-        <img src="heart-gift-box.png" class="heart-img" alt="Heart Gift Box">
+        <img src="heart-gift-box.png" class="heart-img">
         <div class="bow" onclick="startPhotos()">🎀</div>
     </div>
 </div>
@@ -274,7 +273,7 @@ function startPhotos(){
     },4000);
 }
 
-/* QUESTIONS — UNCHANGED */
+/* QUESTIONS — FULLY UNCHANGED */
 const questions=[
 { q:"Are you ready for something made just for you? 💕", options:["Yes papa❤️","ok dii❤️","Always 😘"]},
 { q:"Do you remember our first conversation in call? 💭", options:["Very clearly(EXPLAIN) 😊","How can I forget(EXPLAIN) 💖"]},
