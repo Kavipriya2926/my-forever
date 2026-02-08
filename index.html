@@ -10,12 +10,11 @@
 body{
     margin:0;
     font-family:'Playfair Display',serif;
-    background:#ffe6ec; /* light pink like gift box */
+    background:#ffe6ec;
 }
 body.locked{overflow:hidden;}
 body.unlocked{overflow-y:auto;}
 
-/* MUSIC BUTTON */
 .music-btn{
     position:fixed;
     bottom:25px;
@@ -34,7 +33,6 @@ body.unlocked{overflow-y:auto;}
     z-index:200;
 }
 
-/* PASSWORD */
 .lock-screen{
     position:fixed;
     inset:0;
@@ -79,7 +77,6 @@ body.unlocked{overflow-y:auto;}
     cursor:pointer;
 }
 
-/* BACKGROUND IMAGE (ONLY FOR QUESTIONS) */
 .background{
     position:fixed;
     inset:0;
@@ -90,7 +87,6 @@ body.unlocked{overflow-y:auto;}
 }
 .background.show{opacity:1;}
 
-/* HEART GIFT BOX SCREEN */
 .box-screen{
     position:fixed;
     inset:0;
@@ -100,7 +96,6 @@ body.unlocked{overflow-y:auto;}
     z-index:90;
 }
 
-/* HEART BOX */
 .heart-box{
     width:320px;
     height:300px;
@@ -132,7 +127,6 @@ body.unlocked{overflow-y:auto;}
 .heart:before{top:-50%;}
 .heart:after{right:-50%;}
 
-/* BOW */
 .bow{
     position:absolute;
     top:40%;
@@ -143,7 +137,6 @@ body.unlocked{overflow-y:auto;}
     z-index:10;
 }
 
-/* PHOTOS */
 .photo{
     position:absolute;
     width:220px;
@@ -160,7 +153,6 @@ body.unlocked{overflow-y:auto;}
     100%{opacity:0; transform:translateY(-40px) scale(1);}
 }
 
-/* MAIN QUESTIONS */
 .main{
     display:none;
     min-height:100vh;
@@ -204,7 +196,6 @@ button{
 </audio>
 <div class="music-btn" onclick="toggleMusic()">🎵</div>
 
-<!-- PASSWORD -->
 <div class="lock-screen" id="lock">
     <div class="lock-box">
         <h1>For My Love</h1>
@@ -218,7 +209,6 @@ button{
 
 <div class="background" id="bg"></div>
 
-<!-- HEART BOX -->
 <div class="box-screen" id="boxScreen">
     <div class="heart-box">
         <div class="heart"></div>
@@ -226,7 +216,6 @@ button{
     </div>
 </div>
 
-<!-- MAIN -->
 <div class="main" id="site">
     <div class="container" id="content">
         <h1>My Forever 💖</h1>
@@ -269,24 +258,48 @@ function startPhotos(){
             document.body.classList.add("unlocked");
             return;
         }
+
         const img=document.createElement("img");
-        img.src=`photo${photoIndex}.jpg`;
+        img.src=`photos/photo${photoIndex}.jpg`;  /* ✅ FIXED HERE */
         img.className="photo";
         img.style.left="50%";
         img.style.top="50%";
         img.style.transform="translate(-50%,-50%)";
         box.appendChild(img);
+
         setTimeout(()=>img.remove(),4000);
         photoIndex++;
     },4000);
 }
 
 /* QUESTIONS — UNCHANGED */
-const questions=[/* SAME LIST AS YOUR CODE */];
+const questions = [
+{ q:"Are you ready for something made just for you? 💕", options:["Yes papa❤️","ok dii❤️","Always 😘"]},
+{ q:"Do you remember our first conversation in call? 💭", options:["Very clearly(EXPLAIN) 😊","How can I forget(EXPLAIN) 💖"]},
+{ q:"What made you smile when you think of me? 😄", options:["Your care ❤️","Your cuteness 😻"]},
+{ q:"What do you love most about us? 💑", options:["Our bond 💕","Our small friendly fights🥷","Our understanding 🤍"]},
+{ q:"Where would you like our dream date to be? 🌍", options:["Beach 🌊","Me + You + our pet🐈","Mountains ⛰️"]},
+{ q:"How do I make you feel every day? 💓", options:["Loved 🥰","comfort and loved🫂❤️","Peaceful 😌"]},
+{ q:"What is your favorite memory with me? 💞", options:["Late night talks 🌙","Our pickup line stories😍","Every moment ❤️"]},
+{ q:"What do you miss the most when we are apart? 😢", options:["Your hugs 🤗","your soul🪽","Your smile 😊"]},
+{ q:"What song reminds you of me? 🎵", options:["Our song 💕","All love songs 😘"]},
+{ q:"What do you enjoy doing with me the most? 💌", options:["Talking forever 💬","sleep on my chest🫂","making me angry and get scold"]},
+{ q:"Do you feel safe with me? 🫶", options:["Always ❤️","More than anything 💖"]},
+{ q:"What should our next plan be? 📅", options:["Long walk 🌸","one day outing 💐","Movie night 🎬"]},
+{ q:"What makes our love special? ✨", options:["Our trust 🤍","Our love for each other❤️","Our effort 💕"]},
+{ q:"Do you believe in us forever? 💍", options:["Yes, always ❤️","Till my last breath 😘"]},
+{ q:"What do you want to build with me? 🏡", options:["A life 💞","A future 💍"]},
+{ q:"What word describes us best? 💖", options:["Soulmates 💫","Best friends ❤️"]},
+{ q:"Will you hold my hand through everything? 🤝", options:["Always 💕","Never letting go 😘"]},
+{ q:"What do you promise me today? 💌", options:["My loyalty ❤️","My love forever 💍"]},
+{ q:"How sure are you about us? 🔐", options:["Completely dii 💯","With my whole heart dii 💖"]},
+{ q:"Will you be my forever Valentine? 💘", options:["Yes dii, always dii 💍","Forever yours dii ❤️"]}
+];
 
 function showQuestion(){
     question.innerText=questions[current].q;
-    options.innerHTML=questions[current].options.map(o=>`<button onclick="nextQuestion()">${o}</button>`).join("");
+    options.innerHTML=questions[current].options
+        .map(o=>`<button onclick="nextQuestion()">${o}</button>`).join("");
 }
 function nextQuestion(){
     current++;
