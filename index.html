@@ -35,7 +35,7 @@ body.unlocked { overflow-y: auto; }
     box-shadow: 0 0 60px rgba(255,0,150,0.6);
 }
 
-/* Gradient glowing title */
+/* Glowing gradient title */
 .lock-box h1 {
     font-family: 'Great Vibes', cursive;
     font-size: 58px;
@@ -44,7 +44,6 @@ body.unlocked { overflow-y: auto; }
     -webkit-text-fill-color: transparent;
     animation: glowText 2s infinite alternate;
 }
-
 @keyframes glowText {
     from { text-shadow: 0 0 10px #ff69b4; }
     to { text-shadow: 0 0 25px #9b5cff; }
@@ -52,7 +51,6 @@ body.unlocked { overflow-y: auto; }
 
 .lock-box p {
     color: #bdefff;
-    margin-top: 10px;
 }
 
 /* Animated input */
@@ -65,10 +63,8 @@ body.unlocked { overflow-y: auto; }
     font-size: 18px;
     text-align: center;
     outline: none;
-    box-shadow: 0 0 15px rgba(255,255,255,0.6);
     animation: pulseInput 1.5s infinite alternate;
 }
-
 @keyframes pulseInput {
     from { box-shadow: 0 0 10px #ff69b4; }
     to { box-shadow: 0 0 25px #9b5cff; }
@@ -177,7 +173,6 @@ h1 {
 p {
     font-size: 28px;
     color: #4a0028;
-    margin: 30px 0;
 }
 .final-message {
     font-family: 'Great Vibes', cursive;
@@ -237,11 +232,7 @@ let current = 0;
 const music = document.getElementById("bgMusic");
 
 function toggleMusic(){
-    if(music.paused){
-        music.play();
-    } else {
-        music.pause();
-    }
+    music.paused ? music.play() : music.pause();
 }
 
 function unlock() {
@@ -258,12 +249,11 @@ envelope.onclick = () => {
     setTimeout(() => {
         env.style.display = "none";
         site.style.display = "block";
-        document.body.classList.remove("locked");
-        document.body.classList.add("unlocked");
+        document.body.classList.replace("locked","unlocked");
     }, 2200);
 };
 
-/* QUESTIONS (UNCHANGED) */
+/* QUESTIONS — UNCHANGED (ALL INCLUDED) */
 const questions = [
 { q: "Are you ready for something made just for you? 💕", options: ["Yes papa❤️","ok dii❤️","Always 😘"] },
 { q: "Do you remember our first conversation in call? 💭", options: ["Very clearly(EXPLAIN) 😊","How can I forget(EXPLAIN) 💖"] },
@@ -290,8 +280,7 @@ const questions = [
 function showQuestion(){
     question.innerText = questions[current].q;
     options.innerHTML = questions[current].options
-        .map(o=>`<button onclick="nextQuestion()">${o}</button>`)
-        .join("");
+        .map(o=>`<button onclick="nextQuestion()">${o}</button>`).join("");
 }
 function nextQuestion(){
     current++;
@@ -299,13 +288,12 @@ function nextQuestion(){
     else content.innerHTML = `
         <h1>Forever Us 💍</h1>
         <p class="final-message">
-        From the day we first met until now, we have faced so many moments together — 
-        fights, tears, laughter, emotions, and struggles. Yet no matter how hard the day was, 
-        we never went to sleep without finding our way back to each other.
-        You stayed, you listened, and you made sure I always rested with a smile.
-        This love is all I want for my whole life.
+        From the day we first met until now, we have faced so many moments together —
+        fights, tears, laughter, emotions, and struggles.
+        You stayed, you listened, and made sure I always slept with a smile.
         <br><br>
-        Will you be my Valentine — not just in this lifetime, but in every lifetime my soul ever finds yours? ❤️
+        Will you be my Valentine — not just in this lifetime,
+        but in every lifetime my soul ever finds yours? ❤️
         </p>`;
 }
 showQuestion();
