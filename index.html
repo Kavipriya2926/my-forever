@@ -15,47 +15,100 @@ body {
 body.locked { overflow: hidden; }
 body.unlocked { overflow-y: auto; }
 
-/* PASSWORD SCREEN */
+/* ================= PASSWORD SCREEN ================= */
 .lock-screen {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle, #2b0015, #000);
+    background: radial-gradient(circle, #120012, #000);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
 }
+
 .lock-box {
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(10px);
-    padding: 50px;
+    width: 380px;
+    padding: 45px;
+    background: #050005;
     border-radius: 30px;
     text-align: center;
+    box-shadow: 0 0 60px rgba(255,0,150,0.6);
 }
+
+/* Gradient glowing title */
 .lock-box h1 {
     font-family: 'Great Vibes', cursive;
-    font-size: 60px;
-    color: #ffd6e5;
+    font-size: 58px;
+    background: linear-gradient(90deg,#ffd700,#ff69b4,#9b5cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glowText 2s infinite alternate;
 }
-.lock-box p { color: #fff; }
+
+@keyframes glowText {
+    from { text-shadow: 0 0 10px #ff69b4; }
+    to { text-shadow: 0 0 25px #9b5cff; }
+}
+
+.lock-box p {
+    color: #bdefff;
+    margin-top: 10px;
+}
+
+/* Animated input */
 .lock-box input {
+    margin-top: 25px;
+    width: 80%;
     padding: 14px;
-    border-radius: 25px;
+    border-radius: 30px;
     border: none;
-    text-align: center;
     font-size: 18px;
+    text-align: center;
+    outline: none;
+    box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    animation: pulseInput 1.5s infinite alternate;
 }
+
+@keyframes pulseInput {
+    from { box-shadow: 0 0 10px #ff69b4; }
+    to { box-shadow: 0 0 25px #9b5cff; }
+}
+
+/* Open button */
 .lock-box button {
-    padding: 12px 30px;
+    margin-top: 25px;
+    padding: 12px 40px;
     border-radius: 30px;
     border: none;
     font-size: 18px;
     cursor: pointer;
-    background: linear-gradient(45deg,#ff004f,#ff7eb3);
+    background: linear-gradient(45deg,#ff004f,#7b2ff7);
     color: white;
+    box-shadow: 0 0 25px rgba(255,0,150,0.8);
+    transition: transform 0.2s;
+}
+.lock-box button:active {
+    transform: scale(0.9);
 }
 
-/* BACKGROUND */
+/* Music button */
+.music-btn {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: linear-gradient(45deg,#ff004f,#7b2ff7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 0 25px rgba(255,0,150,0.9);
+}
+
+/* ================= BACKGROUND ================= */
 .background {
     position: fixed;
     inset: 0;
@@ -70,7 +123,7 @@ body.unlocked { overflow-y: auto; }
     50% { transform: scale(1.05); }
 }
 
-/* ENVELOPE */
+/* ================= ENVELOPE ================= */
 .envelope-screen {
     position: fixed;
     inset: 0;
@@ -86,9 +139,7 @@ body.unlocked { overflow-y: auto; }
     height: 65vh;
     background: linear-gradient(145deg,#ff5c8a,#ff2f6d);
     border-radius: 30px;
-    position: relative;
     cursor: pointer;
-    overflow: hidden;
 }
 .envelope::before {
     content: "";
@@ -103,7 +154,7 @@ body.unlocked { overflow-y: auto; }
     transform: rotateX(180deg);
 }
 
-/* MAIN CONTENT */
+/* ================= MAIN CONTENT ================= */
 .main {
     display: none;
     min-height: 100vh;
@@ -131,7 +182,6 @@ p {
 .final-message {
     font-family: 'Great Vibes', cursive;
     font-size: 34px;
-    line-height: 1.6;
     color: #6b0035;
 }
 button {
@@ -149,15 +199,22 @@ button {
 
 <body class="locked">
 
+<!-- 🎵 MUSIC -->
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PASSWORD -->
 <div class="lock-screen" id="lock">
     <div class="lock-box">
-        <h1>For My Love 💌</h1>
-        <p>Enter our secret Number</p>
+        <h1>For My Love</h1>
+        <p>Enter our secret number</p>
         <input type="password" id="pwd">
-        <br><br>
+        <br>
         <button onclick="unlock()">Open</button>
         <p id="error" style="color:#ff7eb3;"></p>
     </div>
+    <div class="music-btn" onclick="toggleMusic()">🎵</div>
 </div>
 
 <div class="background"></div>
@@ -177,6 +234,15 @@ button {
 <script>
 const PASSWORD = "29262004";
 let current = 0;
+const music = document.getElementById("bgMusic");
+
+function toggleMusic(){
+    if(music.paused){
+        music.play();
+    } else {
+        music.pause();
+    }
+}
 
 function unlock() {
     if (pwd.value === PASSWORD) {
@@ -197,56 +263,51 @@ envelope.onclick = () => {
     }, 2200);
 };
 
+/* QUESTIONS (UNCHANGED) */
 const questions = [
-{ q: "Are you ready for something made just for you? 💕", options: ["Yes papa❤️", "ok dii❤️", "Always 😘"] },
-{ q: "Do you remember our first conversation in call? 💭", options: ["Very clearly(EXPLAIN) 😊", "How can I forget(EXPLAIN) 💖"] },
-{ q: "What made you smile when you think of me? 😄", options: ["Your care ❤️", "Your cuteness 😻"] },
-{ q: "What do you love most about us? 💑", options: ["Our bond 💕", "Our small friendly fights🥷", "Our understanding 🤍"] },
-{ q: "Where would you like our dream date to be? 🌍", options: ["Beach 🌊", "Me + You + our pet🐈", "Mountains ⛰️"] },
-{ q: "How do I make you feel every day? 💓", options: ["Loved 🥰", "comfort and loved🫂❤️", "Peaceful 😌"] },
-{ q: "What is your favorite memory with me? 💞", options: ["Late night talks 🌙", "Our pickup line stories😍", "Every moment ❤️"] },
-{ q: "What do you miss the most when we are apart? 😢", options: ["Your hugs 🤗", "your soul🪽", "Your smile 😊"] },
-{ q: "What song reminds you of me? 🎵", options: ["Our song 💕", "All love songs 😘"] },
-{ q: "What do you enjoy doing with me the most? 💌", options: ["Talking forever 💬", "sleep on my chest🫂", "making me angry and get scold"] },
-{ q: "Do you feel safe with me? 🫶", options: ["Always ❤️", "More than anything 💖"] },
-{ q: "What should our next plan be? 📅", options: ["Long walk 🌸", "one day outing 💐", "Movie night 🎬"] },
-{ q: "What makes our love special? ✨", options: ["Our trust 🤍", "Our love for each other❤️", "Our effort 💕"] },
-{ q: "Do you believe in us forever? 💍", options: ["Yes, always ❤️", "Till my last breath 😘"] },
-{ q: "What do you want to build with me? 🏡", options: ["A life 💞", "A future 💍"] },
-{ q: "What word describes us best? 💖", options: ["Soulmates 💫", "Best friends ❤️"] },
-{ q: "Will you hold my hand through everything? 🤝", options: ["Always 💕", "Never letting go 😘"] },
-{ q: "What do you promise me today? 💌", options: ["My loyalty ❤️", "My love forever 💍"] },
-{ q: "How sure are you about us? 🔐", options: ["Completely dii 💯", "With my whole heart dii 💖"] },
-{ q: "Will you be my forever Valentine? 💘", options: ["Yes dii, always dii 💍", "Forever yours dii ❤️"] }
+{ q: "Are you ready for something made just for you? 💕", options: ["Yes papa❤️","ok dii❤️","Always 😘"] },
+{ q: "Do you remember our first conversation in call? 💭", options: ["Very clearly(EXPLAIN) 😊","How can I forget(EXPLAIN) 💖"] },
+{ q: "What made you smile when you think of me? 😄", options: ["Your care ❤️","Your cuteness 😻"] },
+{ q: "What do you love most about us? 💑", options: ["Our bond 💕","Our small friendly fights🥷","Our understanding 🤍"] },
+{ q: "Where would you like our dream date to be? 🌍", options: ["Beach 🌊","Me + You + our pet🐈","Mountains ⛰️"] },
+{ q: "How do I make you feel every day? 💓", options: ["Loved 🥰","comfort and loved🫂❤️","Peaceful 😌"] },
+{ q: "What is your favorite memory with me? 💞", options: ["Late night talks 🌙","Our pickup line stories😍","Every moment ❤️"] },
+{ q: "What do you miss the most when we are apart? 😢", options: ["Your hugs 🤗","your soul🪽","Your smile 😊"] },
+{ q: "What song reminds you of me? 🎵", options: ["Our song 💕","All love songs 😘"] },
+{ q: "What do you enjoy doing with me the most? 💌", options: ["Talking forever 💬","sleep on my chest🫂","making me angry and get scold"] },
+{ q: "Do you feel safe with me? 🫶", options: ["Always ❤️","More than anything 💖"] },
+{ q: "What should our next plan be? 📅", options: ["Long walk 🌸","one day outing 💐","Movie night 🎬"] },
+{ q: "What makes our love special? ✨", options: ["Our trust 🤍","Our love for each other❤️","Our effort 💕"] },
+{ q: "Do you believe in us forever? 💍", options: ["Yes, always ❤️","Till my last breath 😘"] },
+{ q: "What do you want to build with me? 🏡", options: ["A life 💞","A future 💍"] },
+{ q: "What word describes us best? 💖", options: ["Soulmates 💫","Best friends ❤️"] },
+{ q: "Will you hold my hand through everything? 🤝", options: ["Always 💕","Never letting go 😘"] },
+{ q: "What do you promise me today? 💌", options: ["My loyalty ❤️","My love forever 💍"] },
+{ q: "How sure are you about us? 🔐", options: ["Completely dii 💯","With my whole heart dii 💖"] },
+{ q: "Will you be my forever Valentine? 💘", options: ["Yes dii, always dii 💍","Forever yours dii ❤️"] }
 ];
 
-function showQuestion() {
+function showQuestion(){
     question.innerText = questions[current].q;
     options.innerHTML = questions[current].options
-        .map(o => `<button onclick="nextQuestion()">${o}</button>`)
+        .map(o=>`<button onclick="nextQuestion()">${o}</button>`)
         .join("");
 }
-
-function nextQuestion() {
+function nextQuestion(){
     current++;
-    if (current < questions.length) {
-        showQuestion();
-    } else {
-        content.innerHTML = `
-            <h1>Forever Us 💍</h1>
-            <p class="final-message">
-            From the day we first met until now, we have faced so many moments together — 
-            fights, tears, laughter, emotions, and struggles. Yet no matter how hard the day was, 
-            we never went to sleep without finding our way back to each other.
-            You stayed, you listened, and you made sure I always rested with a smile.
-            This love is all I want for my whole life.
-            <br><br>
-            Will you be my Valentine — not just in this lifetime, but in every lifetime my soul ever finds yours? ❤️
-            </p>
-        `;
-    }
+    if(current < questions.length) showQuestion();
+    else content.innerHTML = `
+        <h1>Forever Us 💍</h1>
+        <p class="final-message">
+        From the day we first met until now, we have faced so many moments together — 
+        fights, tears, laughter, emotions, and struggles. Yet no matter how hard the day was, 
+        we never went to sleep without finding our way back to each other.
+        You stayed, you listened, and you made sure I always rested with a smile.
+        This love is all I want for my whole life.
+        <br><br>
+        Will you be my Valentine — not just in this lifetime, but in every lifetime my soul ever finds yours? ❤️
+        </p>`;
 }
-
 showQuestion();
 </script>
 
