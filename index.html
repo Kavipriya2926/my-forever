@@ -14,39 +14,82 @@ body {
     background: #000;
 }
 
-/* ================= MUSIC BUTTON ================= */
-.music-btn {
+/* ================= PASSWORD SCREEN ================= */
+.lock-screen {
     position: fixed;
-    bottom: 25px;
-    right: 25px;
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.45);
-    backdrop-filter: blur(6px);
+    inset: 0;
+    background: radial-gradient(circle, #2b0015, #000);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 28px;
+    z-index: 100;
+}
+
+.lock-box {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    padding: 50px;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 0 60px rgba(255,0,120,0.6);
+}
+
+.lock-box h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 60px;
+    color: #ffb3d1;
+    margin-bottom: 20px;
+}
+
+.lock-box p {
+    color: #ffd6e5;
+    font-size: 20px;
+}
+
+.lock-box input {
+    margin-top: 20px;
+    padding: 14px;
+    width: 220px;
+    border-radius: 25px;
+    border: none;
+    text-align: center;
+    font-size: 18px;
+}
+
+.lock-box button {
+    margin-top: 20px;
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: none;
+    font-size: 18px;
     cursor: pointer;
-    box-shadow: 0 0 25px rgba(255,0,120,0.6);
-    transition: transform 0.3s, box-shadow 0.3s;
-    z-index: 50;
+    background: linear-gradient(45deg,#ff004f,#ff7eb3);
+    color: white;
 }
 
-.music-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 40px rgba(255,0,150,0.9);
+/* ================= BACKGROUND ================= */
+.background {
+    position: fixed;
+    inset: 0;
+    background-image: url("couple-bg.png");
+    background-size: cover;
+    background-position: center;
+    animation: hugZoom 40s ease-in-out infinite;
+    z-index: -2;
 }
 
-/* ================= ENVELOPE SCREEN ================= */
+@keyframes hugZoom {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* ================= ENVELOPE ================= */
 .envelope-screen {
     position: fixed;
     inset: 0;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
-    background: radial-gradient(circle, #2b0015, #000);
     z-index: 20;
 }
 
@@ -54,29 +97,27 @@ body {
     width: 80vw;
     max-width: 900px;
     height: 60vh;
-    background: linear-gradient(145deg, #ff5c8a, #ff2f6d);
+    background: linear-gradient(145deg,#ff5c8a,#ff2f6d);
     border-radius: 25px;
     position: relative;
     box-shadow: 0 0 80px rgba(255,0,120,0.8);
     cursor: pointer;
-    animation: float 4s ease-in-out infinite;
     overflow: hidden;
-}
-
-@keyframes float {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-18px); }
 }
 
 .envelope::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(145deg, #ff94c2, #ff5c8a);
-    clip-path: polygon(0 0, 50% 50%, 100% 0);
+    background: linear-gradient(145deg,#ff94c2,#ff5c8a);
+    clip-path: polygon(0 0,50% 50%,100% 0);
     transform-origin: top;
     transition: transform 2s ease;
     z-index: 3;
+}
+
+.envelope.open::before {
+    transform: rotateX(180deg);
 }
 
 .card {
@@ -87,64 +128,19 @@ body {
     background-position: center;
     transform: translateY(40%);
     transition: transform 2.5s ease;
-    z-index: 1;
-}
-
-.card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0.45);
-    backdrop-filter: blur(6px);
-}
-
-.envelope.open::before {
-    transform: rotateX(180deg);
 }
 
 .envelope.open .card {
     transform: translateY(0);
 }
 
-.envelope-title {
-    position: absolute;
-    bottom: 30px;
-    width: 100%;
-    text-align: center;
-    font-family: 'Great Vibes', cursive;
-    font-size: 46px;
-    color: white;
-    z-index: 4;
-}
-
-.open-hint {
-    position: absolute;
-    bottom: -45px;
-    width: 100%;
-    text-align: center;
-    color: #ffb3d1;
-    font-size: 18px;
-}
-
 /* ================= MAIN WEBSITE ================= */
 .main {
     position: fixed;
     inset: 0;
-    background-image: url("couple-bg.png");
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 2s ease;
-    z-index: 1;
+    display: none;
 }
 
-.main.show {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* ================= WEBSITE CARD ================= */
 .container {
     max-width: 900px;
     margin: 80px auto;
@@ -152,7 +148,6 @@ body {
     background: rgba(255,255,255,0.55);
     backdrop-filter: blur(6px);
     border-radius: 45px;
-    box-shadow: 0 0 60px rgba(255,0,120,0.35);
     text-align: center;
 }
 
@@ -171,38 +166,38 @@ p {
 button {
     padding: 14px 32px;
     margin: 10px;
-    border: none;
     border-radius: 50px;
+    border: none;
     font-size: 20px;
-    cursor: pointer;
-    background: linear-gradient(45deg, #ff004f, #7b2ff7, #00c6ff);
+    background: linear-gradient(45deg,#ff004f,#7b2ff7,#00c6ff);
     color: white;
-    box-shadow: 0 0 18px rgba(255,0,150,0.6);
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🎶 MUSIC -->
-<audio id="bgMusic" loop>
-    <source src="love-music.mp3" type="audio/mpeg">
-</audio>
-
-<!-- ▶️ / ⏸ BUTTON -->
-<div class="music-btn" id="musicBtn">▶️</div>
-
-<!-- ENVELOPE -->
-<div class="envelope-screen" id="envScreen">
-    <div class="envelope" id="envelope">
-        <div class="card"></div>
-        <div class="envelope-title">My Forever 💖</div>
-        <div class="open-hint">Tap to open 💌</div>
+<!-- 🔐 PASSWORD -->
+<div class="lock-screen" id="lock">
+    <div class="lock-box">
+        <h1>For Our Love 💌</h1>
+        <p>Enter our secret word</p>
+        <input type="password" id="pwd" placeholder="💖">
+        <br>
+        <button onclick="unlock()">Open</button>
+        <p id="error" style="color:#ff7eb3;"></p>
     </div>
 </div>
 
-<!-- MAIN WEBSITE -->
-<div class="main" id="mainSite">
+<div class="background"></div>
+
+<div class="envelope-screen" id="env">
+    <div class="envelope" id="envelope">
+        <div class="card"></div>
+    </div>
+</div>
+
+<div class="main" id="site">
     <div class="container">
         <h1>My Forever 💖</h1>
         <p id="question"></p>
@@ -211,35 +206,23 @@ button {
 </div>
 
 <script>
-const music = document.getElementById("bgMusic");
-const musicBtn = document.getElementById("musicBtn");
-let isPlaying = false;
+const PASSWORD = "onlyus"; // 🔑 CHANGE HERE IF NEEDED
 
-/* Envelope open */
+function unlock() {
+    if (document.getElementById("pwd").value === PASSWORD) {
+        document.getElementById("lock").style.display = "none";
+        document.getElementById("env").style.display = "flex";
+    } else {
+        document.getElementById("error").innerText = "Wrong password 💔";
+    }
+}
+
 document.getElementById("envelope").onclick = () => {
     document.getElementById("envelope").classList.add("open");
-
-    music.volume = 0.4;
-    music.play();
-    isPlaying = true;
-    musicBtn.innerText = "⏸";
-
     setTimeout(() => {
-        document.getElementById("envScreen").style.display = "none";
-        document.getElementById("mainSite").classList.add("show");
+        document.getElementById("env").style.display = "none";
+        document.getElementById("site").style.display = "block";
     }, 2500);
-};
-
-/* Play / Pause */
-musicBtn.onclick = () => {
-    if (isPlaying) {
-        music.pause();
-        musicBtn.innerText = "▶️";
-    } else {
-        music.play();
-        musicBtn.innerText = "⏸";
-    }
-    isPlaying = !isPlaying;
 };
 
 /* QUESTIONS — UNCHANGED */
