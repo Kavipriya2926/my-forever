@@ -15,6 +15,7 @@ body{
 body.locked{overflow:hidden;}
 body.unlocked{overflow-y:auto;}
 
+/* MUSIC BUTTON */
 .music-btn{
     position:fixed;
     bottom:25px;
@@ -33,6 +34,7 @@ body.unlocked{overflow-y:auto;}
     z-index:200;
 }
 
+/* PASSWORD */
 .lock-screen{
     position:fixed;
     inset:0;
@@ -77,6 +79,7 @@ body.unlocked{overflow-y:auto;}
     cursor:pointer;
 }
 
+/* BACKGROUND FOR QUESTIONS */
 .background{
     position:fixed;
     inset:0;
@@ -87,6 +90,7 @@ body.unlocked{overflow-y:auto;}
 }
 .background.show{opacity:1;}
 
+/* HEART BOX SCREEN */
 .box-screen{
     position:fixed;
     inset:0;
@@ -96,9 +100,9 @@ body.unlocked{overflow-y:auto;}
     z-index:90;
 }
 
+/* HEART GIFT BOX IMAGE */
 .heart-box{
-    width:320px;
-    height:300px;
+    width:340px;
     position:relative;
     animation:rise 1.5s ease forwards;
 }
@@ -107,36 +111,23 @@ body.unlocked{overflow-y:auto;}
     to{transform:translateY(0) scale(1);}
 }
 
-.heart{
+.heart-box img{
     width:100%;
-    height:100%;
-    background:#ff4f87;
-    position:relative;
-    transform:rotate(-45deg);
-    border-radius:20px;
+    display:block;
 }
-.heart:before,
-.heart:after{
-    content:"";
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:#ff4f87;
-    border-radius:50%;
-}
-.heart:before{top:-50%;}
-.heart:after{right:-50%;}
 
+/* BOW CLICK AREA */
 .bow{
     position:absolute;
-    top:40%;
+    top:35%;
     left:50%;
     transform:translate(-50%,-50%);
-    font-size:48px;
+    font-size:40px;
     cursor:pointer;
-    z-index:10;
+    z-index:5;
 }
 
+/* PHOTOS */
 .photo{
     position:absolute;
     width:220px;
@@ -153,6 +144,7 @@ body.unlocked{overflow-y:auto;}
     100%{opacity:0; transform:translateY(-40px) scale(1);}
 }
 
+/* QUESTIONS */
 .main{
     display:none;
     min-height:100vh;
@@ -192,10 +184,11 @@ button{
 <body class="locked">
 
 <audio id="bgMusic" loop>
-<source src="music.mp3" type="audio/mpeg">
+    <source src="music.mp3" type="audio/mpeg">
 </audio>
 <div class="music-btn" onclick="toggleMusic()">🎵</div>
 
+<!-- PASSWORD -->
 <div class="lock-screen" id="lock">
     <div class="lock-box">
         <h1>For My Love</h1>
@@ -209,13 +202,15 @@ button{
 
 <div class="background" id="bg"></div>
 
+<!-- HEART GIFT BOX -->
 <div class="box-screen" id="boxScreen">
-    <div class="heart-box">
-        <div class="heart"></div>
+    <div class="heart-box" id="heartBox">
+        <img src="photos/heart-gift-box.png" alt="Heart Gift Box">
         <div class="bow" onclick="startPhotos()">🎀</div>
     </div>
 </div>
 
+<!-- MAIN -->
 <div class="main" id="site">
     <div class="container" id="content">
         <h1>My Forever 💖</h1>
@@ -229,6 +224,7 @@ const PASSWORD="29262004";
 const music=document.getElementById("bgMusic");
 const bg=document.getElementById("bg");
 const boxScreen=document.getElementById("boxScreen");
+const heartBox=document.getElementById("heartBox");
 let current=0;
 let photoIndex=1;
 
@@ -247,7 +243,8 @@ function unlock(){
 }
 
 function startPhotos(){
-    const box=document.querySelector(".heart-box");
+    document.querySelector(".bow").style.display="none";
+
     const interval=setInterval(()=>{
         if(photoIndex>10){
             clearInterval(interval);
@@ -260,12 +257,12 @@ function startPhotos(){
         }
 
         const img=document.createElement("img");
-        img.src=`photos/photo${photoIndex}.jpg`;  /* ✅ FIXED HERE */
+        img.src=`photos/photo${photoIndex}.jpg`;
         img.className="photo";
         img.style.left="50%";
         img.style.top="50%";
         img.style.transform="translate(-50%,-50%)";
-        box.appendChild(img);
+        heartBox.appendChild(img);
 
         setTimeout(()=>img.remove(),4000);
         photoIndex++;
@@ -273,7 +270,7 @@ function startPhotos(){
 }
 
 /* QUESTIONS — UNCHANGED */
-const questions = [
+const questions=[
 { q:"Are you ready for something made just for you? 💕", options:["Yes papa❤️","ok dii❤️","Always 😘"]},
 { q:"Do you remember our first conversation in call? 💭", options:["Very clearly(EXPLAIN) 😊","How can I forget(EXPLAIN) 💖"]},
 { q:"What made you smile when you think of me? 😄", options:["Your care ❤️","Your cuteness 😻"]},
@@ -304,8 +301,17 @@ function showQuestion(){
 function nextQuestion(){
     current++;
     if(current<questions.length) showQuestion();
-    else content.innerHTML=`<h1>Forever Us 💍</h1>
-    <p class="final-message">Your final paragraph (UNCHANGED)</p>`;
+    else content.innerHTML=`
+        <h1>Forever Us 💍</h1>
+        <p class="final-message">
+        From the day we first met until now, we have faced so many moments together —
+        fights, tears, laughter, emotions, and struggles.
+        Yet no matter how hard the day was, we never went to sleep without finding our way back to each other.
+        You stayed, you listened, and you made sure I always rested with a smile.
+        This love is all I want for my whole life.
+        <br><br>
+        Will you be my Valentine — not just in this lifetime, but in every lifetime my soul ever finds yours? ❤️
+        </p>`;
 }
 showQuestion();
 </script>
