@@ -15,78 +15,47 @@ body {
 body.locked { overflow: hidden; }
 body.unlocked { overflow-y: auto; }
 
-/* ================= PASSWORD SCREEN ================= */
+/* PASSWORD SCREEN */
 .lock-screen {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at top, #0a0010, #000);
+    background: radial-gradient(circle, #2b0015, #000);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
 }
-
 .lock-box {
-    background: rgba(0,0,0,0.6);
-    padding: 60px;
-    border-radius: 35px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    padding: 50px;
+    border-radius: 30px;
     text-align: center;
-    box-shadow: 0 0 60px rgba(255,105,180,0.9);
 }
-
 .lock-box h1 {
     font-family: 'Great Vibes', cursive;
-    font-size: 64px;
-    background: linear-gradient(90deg,#ffd700,#ff69b4,#7b2ff7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: glitter 3s linear infinite;
+    font-size: 60px;
+    color: #ffd6e5;
 }
-
-@keyframes glitter {
-    0% { filter: drop-shadow(0 0 5px #ffd700); }
-    50% { filter: drop-shadow(0 0 15px #ff69b4); }
-    100% { filter: drop-shadow(0 0 5px #7b2ff7); }
-}
-
-.lock-box p {
-    color: #b8f7ff;
-    font-size: 20px;
-}
-
+.lock-box p { color: #fff; }
 .lock-box input {
-    margin-top: 20px;
-    padding: 15px;
-    width: 240px;
-    border-radius: 30px;
+    padding: 14px;
+    border-radius: 25px;
     border: none;
-    font-size: 18px;
     text-align: center;
-    outline: none;
-    animation: pulse 2s infinite;
+    font-size: 18px;
 }
-
-@keyframes pulse {
-    0% { box-shadow: 0 0 10px #ff69b4; }
-    50% { box-shadow: 0 0 25px #7b2ff7; }
-    100% { box-shadow: 0 0 10px #ff69b4; }
-}
-
 .lock-box button {
-    margin-top: 25px;
-    padding: 14px 36px;
+    padding: 12px 30px;
     border-radius: 30px;
     border: none;
     font-size: 18px;
-    background: linear-gradient(45deg,#ff004f,#7b2ff7,#00c6ff);
-    color: white;
     cursor: pointer;
-    box-shadow: 0 0 25px rgba(255,0,150,0.8);
-    transition: transform 0.2s;
+    background: linear-gradient(45deg,#ff004f,#ff7eb3);
+    color: white;
 }
-.lock-box button:active { transform: scale(0.9); }
 
-/* ================= BACKGROUND ================= */
+/* BACKGROUND */
 .background {
     position: fixed;
     inset: 0;
@@ -96,73 +65,50 @@ body.unlocked { overflow-y: auto; }
     animation: hugZoom 40s ease-in-out infinite;
     z-index: -1;
 }
-
 @keyframes hugZoom {
     0%,100% { transform: scale(1); }
-    50% { transform: scale(1.06); }
+    50% { transform: scale(1.05); }
 }
 
-/* ================= ENVELOPE ================= */
+/* ENVELOPE */
 .envelope-screen {
     position: fixed;
     inset: 0;
     display: none;
     justify-content: center;
     align-items: center;
+    background: rgba(0,0,0,0.6);
     z-index: 50;
 }
-
 .envelope {
     width: 85vw;
     max-width: 900px;
     height: 65vh;
-    background: linear-gradient(135deg,#ff0080,#7928ca,#00c6ff);
-    border-radius: 35px;
+    background: linear-gradient(145deg,#ff5c8a,#ff2f6d);
+    border-radius: 30px;
     position: relative;
     cursor: pointer;
     overflow: hidden;
-    animation: shimmer 6s infinite;
 }
-
-@keyframes shimmer {
-    0% { filter: brightness(1); }
-    50% { filter: brightness(1.2); }
-    100% { filter: brightness(1); }
-}
-
 .envelope::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg,#ffd1dc,#ff69b4);
+    background: linear-gradient(145deg,#ff94c2,#ff5c8a);
     clip-path: polygon(0 0,50% 50%,100% 0);
     transform-origin: top;
     transition: transform 2s ease;
 }
-
 .envelope.open::before {
     transform: rotateX(180deg);
 }
 
-/* floating emojis */
-.envelope span {
-    position: absolute;
-    animation: float 10s linear infinite;
-    opacity: 0.8;
-}
-
-@keyframes float {
-    from { transform: translateY(100%); }
-    to { transform: translateY(-150%); }
-}
-
-/* ================= MAIN ================= */
+/* MAIN CONTENT */
 .main {
     display: none;
     min-height: 100vh;
     padding: 80px 0;
 }
-
 .container {
     max-width: 900px;
     margin: auto;
@@ -172,26 +118,22 @@ body.unlocked { overflow-y: auto; }
     border-radius: 45px;
     text-align: center;
 }
-
 h1 {
     font-family: 'Great Vibes', cursive;
     font-size: 68px;
     color: #b0005c;
 }
-
 p {
     font-size: 28px;
     color: #4a0028;
     margin: 30px 0;
 }
-
 .final-message {
     font-family: 'Great Vibes', cursive;
-    font-size: 36px;
-    line-height: 1.7;
+    font-size: 34px;
+    line-height: 1.6;
     color: #6b0035;
 }
-
 button {
     padding: 14px 32px;
     margin: 10px;
@@ -201,117 +143,110 @@ button {
     background: linear-gradient(45deg,#ff004f,#7b2ff7,#00c6ff);
     color: white;
     cursor: pointer;
-    box-shadow: 0 0 25px rgba(255,0,150,0.8);
-    animation: glow 2s infinite;
-}
-@keyframes glow {
-    0% { box-shadow: 0 0 10px #ff69b4; }
-    50% { box-shadow: 0 0 30px #7b2ff7; }
-    100% { box-shadow: 0 0 10px #ff69b4; }
-}
-button:active { transform: scale(0.9); }
-
-/* 🎶 Music Button */
-.music-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(45deg,#ff004f,#7b2ff7);
-    color: white;
-    font-size: 26px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 0 25px rgba(255,0,150,0.8);
-    animation: pulse 2s infinite;
-    z-index: 200;
 }
 </style>
 </head>
 
 <body class="locked">
 
-<audio id="bgMusic" loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
-
 <div class="lock-screen" id="lock">
-  <div class="lock-box">
-    <h1>For My Love 💌</h1>
-    <p>Enter our secret number</p>
-    <input type="password" id="pwd">
-    <br><br>
-    <button onclick="unlock()">Open</button>
-    <p id="error"></p>
-  </div>
+    <div class="lock-box">
+        <h1>For My Love 💌</h1>
+        <p>Enter our secret Number</p>
+        <input type="password" id="pwd">
+        <br><br>
+        <button onclick="unlock()">Open</button>
+        <p id="error" style="color:#ff7eb3;"></p>
+    </div>
 </div>
 
 <div class="background"></div>
 
 <div class="envelope-screen" id="env">
-  <div class="envelope" id="envelope">
-    <span style="left:10%">💖</span>
-    <span style="left:40%">✨</span>
-    <span style="left:70%">💌</span>
-  </div>
+    <div class="envelope" id="envelope"></div>
 </div>
 
 <div class="main" id="site">
-  <div class="container" id="content">
-    <h1>My Forever 💖</h1>
-    <p id="question"></p>
-    <div id="options"></div>
-  </div>
+    <div class="container" id="content">
+        <h1>My Forever 💖</h1>
+        <p id="question"></p>
+        <div id="options"></div>
+    </div>
 </div>
 
-<button class="music-btn" onclick="toggleMusic()">🎶</button>
-
 <script>
-const PASSWORD="29262004";
-let music=document.getElementById("bgMusic");
-let playing=false;
+const PASSWORD = "29262004";
+let current = 0;
 
-function unlock(){
-  if(pwd.value===PASSWORD){
-    lock.style.display="none";
-    env.style.display="flex";
-    music.volume=0.4;
-    music.play();
-    playing=true;
-  } else error.innerText="Wrong password 💔";
+function unlock() {
+    if (pwd.value === PASSWORD) {
+        lock.style.display = "none";
+        env.style.display = "flex";
+    } else {
+        error.innerText = "Wrong password 💔";
+    }
 }
 
-function toggleMusic(){
-  if(playing){ music.pause(); playing=false; }
-  else{ music.play(); playing=true; }
-}
-
-envelope.onclick=()=>{
-  envelope.classList.add("open");
-  setTimeout(()=>{
-    env.style.display="none";
-    site.style.display="block";
-    document.body.classList.remove("locked");
-    document.body.classList.add("unlocked");
-  },2200);
+envelope.onclick = () => {
+    envelope.classList.add("open");
+    setTimeout(() => {
+        env.style.display = "none";
+        site.style.display = "block";
+        document.body.classList.remove("locked");
+        document.body.classList.add("unlocked");
+    }, 2200);
 };
 
-/* QUESTIONS UNCHANGED */
-let current=0;
-const questions=[/* SAME QUESTIONS AS YOU PROVIDED */];
+const questions = [
+{ q: "Are you ready for something made just for you? 💕", options: ["Yes papa❤️", "ok dii❤️", "Always 😘"] },
+{ q: "Do you remember our first conversation in call? 💭", options: ["Very clearly(EXPLAIN) 😊", "How can I forget(EXPLAIN) 💖"] },
+{ q: "What made you smile when you think of me? 😄", options: ["Your care ❤️", "Your cuteness 😻"] },
+{ q: "What do you love most about us? 💑", options: ["Our bond 💕", "Our small friendly fights🥷", "Our understanding 🤍"] },
+{ q: "Where would you like our dream date to be? 🌍", options: ["Beach 🌊", "Me + You + our pet🐈", "Mountains ⛰️"] },
+{ q: "How do I make you feel every day? 💓", options: ["Loved 🥰", "comfort and loved🫂❤️", "Peaceful 😌"] },
+{ q: "What is your favorite memory with me? 💞", options: ["Late night talks 🌙", "Our pickup line stories😍", "Every moment ❤️"] },
+{ q: "What do you miss the most when we are apart? 😢", options: ["Your hugs 🤗", "your soul🪽", "Your smile 😊"] },
+{ q: "What song reminds you of me? 🎵", options: ["Our song 💕", "All love songs 😘"] },
+{ q: "What do you enjoy doing with me the most? 💌", options: ["Talking forever 💬", "sleep on my chest🫂", "making me angry and get scold"] },
+{ q: "Do you feel safe with me? 🫶", options: ["Always ❤️", "More than anything 💖"] },
+{ q: "What should our next plan be? 📅", options: ["Long walk 🌸", "one day outing 💐", "Movie night 🎬"] },
+{ q: "What makes our love special? ✨", options: ["Our trust 🤍", "Our love for each other❤️", "Our effort 💕"] },
+{ q: "Do you believe in us forever? 💍", options: ["Yes, always ❤️", "Till my last breath 😘"] },
+{ q: "What do you want to build with me? 🏡", options: ["A life 💞", "A future 💍"] },
+{ q: "What word describes us best? 💖", options: ["Soulmates 💫", "Best friends ❤️"] },
+{ q: "Will you hold my hand through everything? 🤝", options: ["Always 💕", "Never letting go 😘"] },
+{ q: "What do you promise me today? 💌", options: ["My loyalty ❤️", "My love forever 💍"] },
+{ q: "How sure are you about us? 🔐", options: ["Completely dii 💯", "With my whole heart dii 💖"] },
+{ q: "Will you be my forever Valentine? 💘", options: ["Yes dii, always dii 💍", "Forever yours dii ❤️"] }
+];
 
-function showQuestion(){
-  question.innerText=questions[current].q;
-  options.innerHTML=questions[current].options.map(o=>`<button onclick="nextQuestion()">${o}</button>`).join("");
+function showQuestion() {
+    question.innerText = questions[current].q;
+    options.innerHTML = questions[current].options
+        .map(o => `<button onclick="nextQuestion()">${o}</button>`)
+        .join("");
 }
 
-function nextQuestion(){
-  current++;
-  if(current<questions.length) showQuestion();
-  else content.innerHTML=`<h1>Forever Us 💍</h1><p class="final-message">YOUR SAME FINAL MESSAGE HERE ❤️</p>`;
+function nextQuestion() {
+    current++;
+    if (current < questions.length) {
+        showQuestion();
+    } else {
+        content.innerHTML = `
+            <h1>Forever Us 💍</h1>
+            <p class="final-message">
+            From the day we first met until now, we have faced so many moments together — 
+            fights, tears, laughter, emotions, and struggles. Yet no matter how hard the day was, 
+            we never went to sleep without finding our way back to each other.
+            You stayed, you listened, and you made sure I always rested with a smile.
+            This love is all I want for my whole life.
+            <br><br>
+            Will you be my Valentine — not just in this lifetime, but in every lifetime my soul ever finds yours? ❤️
+            </p>
+        `;
+    }
 }
+
 showQuestion();
 </script>
 
