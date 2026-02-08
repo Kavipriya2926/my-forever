@@ -91,27 +91,28 @@ body.unlocked{overflow-y:auto;}
     cursor:pointer;
 }
 
-/* ================= BACKGROUND ================= */
+/* ================= BACKGROUND (hidden initially) ================= */
 .background{
     position:fixed;
     inset:0;
     background:url("couple-bg.png") center/cover no-repeat;
-    animation:zoom 40s ease-in-out infinite;
+    opacity:0;
+    transition:opacity 1.5s ease;
     z-index:-1;
 }
-@keyframes zoom{
-    0%,100%{transform:scale(1);}
-    50%{transform:scale(1.05);}
+.background.show{
+    opacity:1;
 }
 
-/* ================= ENVELOPE (UPDATED) ================= */
+/* ================= ENVELOPE ================= */
 .envelope-screen{
     position:fixed;
     inset:0;
     display:none;
     justify-content:center;
     align-items:center;
-    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(14px);
+    background:rgba(255,255,255,0.08);
     z-index:90;
 }
 
@@ -121,66 +122,59 @@ body.unlocked{overflow-y:auto;}
     position:relative;
     animation:spin 1.2s ease forwards;
 }
-
 @keyframes spin{
     0%{transform:rotate(0deg) scale(.6);}
     100%{transform:rotate(360deg) scale(1);}
 }
 
+/* envelope body */
 .envelope .back{
     position:absolute;
     inset:0;
-    background:#ffffff;
+    background:#fff;
     border:6px solid #ff2f6d;
     border-radius:18px;
     z-index:1;
 }
 
-.envelope .front{
+/* envelope flap */
+.envelope .flap{
     position:absolute;
     left:0;
     right:0;
-    bottom:0;
+    top:0;
     margin:auto;
     width:0;
     height:0;
     border-left:260px solid transparent;
     border-right:260px solid transparent;
-    border-top:180px solid #ff69b4;
+    border-bottom:180px solid #ff69b4;
+    transform-origin:top;
+    transform:rotateX(0deg);
+    transition:transform 1.2s ease;
+    z-index:4;
+}
+.envelope.open .flap{
+    transform:rotateX(180deg);
+}
+
+/* ================= HEART PARTICLES ================= */
+.hearts{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
     z-index:3;
 }
-
-.envelope .heart{
+.heart-particle{
     position:absolute;
-    top:-85px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:120px;
-    z-index:4;
-    animation:pop 1.2s ease forwards;
+    bottom:40px;
+    font-size:28px;
+    animation:floatUp 2.5s ease forwards;
 }
-
-@keyframes pop{
-    0%{opacity:0; transform:translateX(-50%) scale(.3);}
-    100%{opacity:1; transform:translateX(-50%) scale(1);}
-}
-
-/* background pops out from envelope */
-.envelope::after{
-    content:"";
-    position:absolute;
-    inset:-40px;
-    background:url("couple-bg.png") center/cover no-repeat;
-    border-radius:25px;
-    z-index:0;
-    opacity:0;
-    animation:revealBG 1.2s ease forwards;
-    animation-delay:1.2s;
-}
-
-@keyframes revealBG{
-    from{opacity:0; transform:scale(.8);}
-    to{opacity:1; transform:scale(1);}
+@keyframes floatUp{
+    0%{opacity:0; transform:translateY(0) scale(.3);}
+    30%{opacity:1;}
+    100%{opacity:0; transform:translateY(-260px) scale(1);}
 }
 
 /* ================= MAIN ================= */
@@ -228,7 +222,6 @@ button{
 
 <body class="locked">
 
-<!-- MUSIC -->
 <audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
@@ -246,14 +239,14 @@ button{
     </div>
 </div>
 
-<div class="background"></div>
+<div class="background" id="bg"></div>
 
 <!-- ENVELOPE -->
 <div class="envelope-screen" id="env">
-    <div class="envelope">
+    <div class="envelope" id="envelope">
         <div class="back"></div>
-        <div class="front"></div>
-        <div class="heart">💖</div>
+        <div class="flap"></div>
+        <div class="hearts" id="hearts"></div>
     </div>
 </div>
 
@@ -269,6 +262,8 @@ button{
 <script>
 const PASSWORD="29262004";
 const music=document.getElementById("bgMusic");
+const bg=document.getElementById("bg");
+const heartsBox=document.getElementById("hearts");
 let current=0;
 
 function toggleMusic(){
@@ -280,12 +275,32 @@ function unlock(){
         lock.style.display="none";
         env.style.display="flex";
         music.play();
+
+        setTimeout(()=>{
+            envelope.classList.add("open");
+        },1200);
+
+        setTimeout(()=>{
+            for(let i=0;i<25;i++){
+                const h=document.createElement("div");
+                h.className="heart-particle";
+                h.innerText="❤️";
+                h.style.left=Math.random()*100+"%";
+                heartsBox.appendChild(h);
+                setTimeout(()=>h.remove(),2500);
+            }
+        },2000);
+
+        setTimeout(()=>{
+            bg.classList.add("show");
+        },3500);
+
         setTimeout(()=>{
             env.style.display="none";
             site.style.display="block";
             document.body.classList.remove("locked");
             document.body.classList.add("unlocked");
-        },2800);
+        },4800);
     }else{
         error.innerText="Wrong password 💔";
     }
@@ -317,9 +332,7 @@ const questions=[
 
 function showQuestion(){
     question.innerText=questions[current].q;
-    options.innerHTML=questions[current].options
-        .map(o=>`<button onclick="nextQuestion()">${o}</button>`)
-        .join("");
+    options.innerHTML=questions[current].options.map(o=>`<button onclick="nextQuestion()">${o}</button>`).join("");
 }
 function nextQuestion(){
     current++;
